@@ -19,13 +19,14 @@ export class ShopifySdkWrapperService {
 
     /**
      * すべての商品を取得する
+     * @param maxNumber 最大取得数
      */
-    public fetchAllProducts(): Promise<ShopifyBuy.Product[]> {
-        return this.client.product.fetchAll();
+    public fetchAllProducts(maxNumber?: number): Promise<ShopifyBuy.Product[]> {
+        return this.client.product.fetchAll(maxNumber);
     }
 
     /**
-     * createCheckout
+     * 精算を作成する
      */
     public async createCheckout(): Promise<void> {
         const cart = await this.client.checkout.create();
@@ -34,7 +35,7 @@ export class ShopifySdkWrapperService {
     }
 
     /**
-     * addLineItem
+     * アイテムをカートに追加
      */
     public async addLineItem(
         variantId: string | number,
