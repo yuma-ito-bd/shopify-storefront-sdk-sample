@@ -26,6 +26,19 @@ export class ShopifySdkWrapperService {
     }
 
     /**
+     * 商品を検索する
+     */
+    public searchProducts(name: string): Promise<ShopifyBuy.Product[]> {
+        // see: https://shopify.dev/concepts/about-apis/search-syntax
+        // 日本語の商品は検索にひっかかりにくい
+        const query: ShopifyBuy.Query = {
+            query: name,
+            sortBy: 'title',
+        };
+        return this.client.product.fetchQuery(query);
+    }
+
+    /**
      * 精算を作成する
      */
     public async createCheckout(): Promise<void> {

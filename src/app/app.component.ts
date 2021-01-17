@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ShopifySdkWrapperService } from './services/shopify-sdk-wrapper.service';
 
 @Component({
@@ -9,6 +10,7 @@ import { ShopifySdkWrapperService } from './services/shopify-sdk-wrapper.service
 export class AppComponent implements OnInit {
     title = 'shopify-storefront-sdk-sample';
     products!: ShopifyBuy.Product[];
+    searchForm = new FormControl('');
 
     constructor(private shopify: ShopifySdkWrapperService) {}
 
@@ -28,5 +30,14 @@ export class AppComponent implements OnInit {
         // await this.shopify.addLineItem(redTshirtsMediumId, 2);
         // await this.shopify.addLineItem(redTshirtsLargeId, 3);
         // console.log(await this.shopify.getCheckoutUrl());
+    }
+
+    /**
+     * 検索ボタン押下時処理
+     */
+    async onSearch(): Promise<void> {
+        // フォームに入力された値で商品を検索する
+        const { value } = this.searchForm;
+        this.products = await this.shopify.searchProducts(value);
     }
 }
